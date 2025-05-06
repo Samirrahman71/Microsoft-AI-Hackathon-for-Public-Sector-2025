@@ -1,4 +1,4 @@
-# GovFlow AI
+# GovFlow AI (testrepo)
 
 A modern interface for government services that simplifies citizen interactions with government agencies through an AI-powered assistant.
 
@@ -20,7 +20,7 @@ A modern interface for government services that simplifies citizen interactions 
 
 1. Clone the repository
 2. Set up environment variables (see `.env.example`)
-3. Install dependencies 
+3. Install dependencies
 4. Run the application
 
 ## Development
