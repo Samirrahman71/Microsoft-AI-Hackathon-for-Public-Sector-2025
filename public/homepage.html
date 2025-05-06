@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GovFlow AI - Your Government Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #0078D4;
+      --secondary-color: #2B88D8;
+      --accent-color: #0063B1;
+      --background-color: #F5F5F5;
+      --text-color: #333333;
+      --border-color: #DDDDDD;
+      --success-color: #4CAF50;
+      --warning-color: #FF9800;
+      --error-color: #F44336;
+      --info-color: #2196F3;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Inter', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+    
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .language-select {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .header-button {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s;
+    }
+    
+    .header-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .hero {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    
+    .hero h2 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .hero-button {
+      background-color: white;
+      color: var(--primary-color);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    
+    .hero-button:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px);
+    }
+    
+    main {
+      flex: 1;
+      padding: 3rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+      background-color: var(--primary-color);
+      color: white;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    
+    .feature-content {
+      padding: 1.5rem;
+    }
+    
+    .feature-content h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .feature-content p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-color);
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.5rem 0;
+    }
+    
+    .feature-button:hover {
+      text-decoration: underline;
+    }
+    
+    .getting-started {
+      margin-top: 4rem;
+      text-align: center;
+    }
+    
+    .getting-started h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .getting-started p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      color: #666;
+    }
+    
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .step {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      max-width: 300px;
+      position: relative;
+    }
+    
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-color);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+    
+    .step h3 {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    
+    .demo-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s;
+    }
+    
+    .demo-button:hover {
+      background-color: var(--accent-color);
+    }
+    
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-logo h2 {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .footer-links-column h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links-column ul {
+      list-style: none;
+    }
+    
+    .footer-links-column li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-links-column a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .footer-links-column a:hover {
+      color: white;
+    }
+    
+    .footer-bottom {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #555;
+      font-size: 0.875rem;
+      color: #999;
+    }
+    
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .features {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-landmark"></i>
+        <h1>GovFlow AI</h1>
+      </div>
+      <div class="header-controls">
+        <select class="language-select" id="language-select">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="zh">中文</option>
+          <option value="vi">Tiếng Việt</option>
+          <option value="ko">한국어</option>
+        </select>
+        <button class="header-button">
+          <i class="fas fa-user"></i>
+          <span>Sign In</span>
+        </button>
+      </div>
+    </header>
+    
+    <div class="hero">
+      <h2>Navigate Government Services with AI</h2>
+      <p>GovFlow AI simplifies complex government processes, from moving to a new location to understanding benefit applications and scheduling appointments.</p>
+      <div class="hero-buttons">
+        <button class="hero-button" onclick="window.location.href='index.html'">
+          <i class="fas fa-robot"></i>
+          <span>Start Assistant</span>
+        </button>
+        <button class="hero-button" onclick="scrollToFeatures()">
+          <i class="fas fa-info-circle"></i>
+          <span>Learn More</span>
+        </button>
+      </div>
+    </div>
+    
+    <main>
+      <div class="features" id="features">
+        <div class="feature-card" onclick="window.location.href='index.html#chat'">
+          <div class="feature-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Government Assistant</h3>
+            <p>Ask questions and get guidance on government services in natural language. Get step-by-step assistance for common government tasks.</p>
+            <a href="index.html#chat" class="feature-button">
+              <span>Start Chatting</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='index.html#documents'">
+          <div class="feature-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Document Processing</h3>
+            <p>Upload government documents to understand what they mean and what actions you need to take. Get simple explanations of complex forms.</p>
+            <a href="index.html#documents" class="feature-button">
+              <span>Process Documents</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='index.html#tasks'">
+          <div class="feature-icon">
+            <i class="fas fa-tasks"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Task Tracker</h3>
+            <p>Keep track of your government-related tasks with our visual task tracker. Never miss a deadline or required step again.</p>
+            <a href="index.html#tasks" class="feature-button">
+              <span>View Your Tasks</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='index.html#appointments'">
+          <div class="feature-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Appointment Scheduler</h3>
+            <p>Schedule appointments with government offices. Choose from available times and receive reminders for your upcoming appointments.</p>
+            <a href="index.html#appointments" class="feature-button">
+              <span>Schedule Now</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="getting-started">
+        <h2>Getting Started with GovFlow AI</h2>
+        <p>In just a few simple steps, you can start navigating government services with ease.</p>
+        
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Ask a Question</h3>
+            <p>Begin with a question about a government service or process. For example, "I'm moving to San Jose" or "How do I apply for SNAP benefits?"</p>
+          </div>
+          
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Follow Your Tasks</h3>
+            <p>GovFlow AI creates a personalized task list based on your needs. Track your progress as you complete each step.</p>
+          </div>
+          
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Upload Documents</h3>
+            <p>When you receive government documents, upload them for analysis and guidance on next steps.</p>
+          </div>
+        </div>
+        
+        <button class="demo-button" onclick="window.location.href='index.html'">
+          <i class="fas fa-play"></i>
+          <span>Try Full Demo</span>
+        </button>
+      </div>
+    </main>
+    
+    <footer>
+      <div class="footer-content">
+        <div>
+          <div class="footer-logo">
+            <i class="fas fa-landmark"></i>
+            <h2>GovFlow AI</h2>
+          </div>
+          <p>Simplifying government services with artificial intelligence.</p>
+        </div>
+        
+        <div class="footer-links">
+          <div class="footer-links-column">
+            <h3>Features</h3>
+            <ul>
+              <li><a href="index.html#chat">Government Assistant</a></li>
+              <li><a href="index.html#documents">Document Processing</a></li>
+              <li><a href="index.html#tasks">Task Tracker</a></li>
+              <li><a href="index.html#appointments">Appointment Scheduler</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-column">
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Accessibility</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-column">
+            <h3>Contact</h3>
+            <ul>
+              <li><a href="#">Email Support</a></li>
+              <li><a href="#">Feedback</a></li>
+              <li><a href="#">Report an Issue</a></li>
+              <li><a href="#">Partnership Inquiries</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 GovFlow AI. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+  
+  <script>
+    function scrollToFeatures() {
+      document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const languageSelect = document.getElementById('language-select');
+      
+      languageSelect.addEventListener('change', function() {
+        // Simulate language change
+        const language = this.value;
+        console.log(`Language changed to: ${language}`);
+        
+        // In a real application, this would update all text content
+        // based on the selected language
+      });
+    });
+  </script>
+</body>
+</html>

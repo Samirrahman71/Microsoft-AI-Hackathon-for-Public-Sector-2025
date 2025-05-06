@@ -1,0 +1,103 @@
+{
+    "project": "GovFlow AI",
+    "description": "AI assistant for navigating complex government workflows like moving, benefit applications, and document understanding.",
+    "agents": [
+        {
+            "name": "AzureSetupAgent",
+            "description": "Initializes GPT-4 Turbo via Azure OpenAI and validates prompt responsiveness.",
+            "tasks": [
+                "Generate API key and test prompt delivery",
+                "Confirm GPT-4 Turbo integration"
+            ]
+        },
+        {
+            "name": "ChatbotFlowAgent",
+            "description": "Handles natural language queries and routes them through LangChain. Includes fallback handler.",
+            "tasks": [
+                "Create Q&A flow using LangChain",
+                "Include fallback generic help",
+                "Return task breakdowns (e.g. 'Move to San Jose')"
+            ]
+        },
+        {
+            "name": "DocumentParsingAgent",
+            "description": "Processes images or PDFs of government forms using Azure Form Recognizer and suggests autofilled responses.",
+            "tasks": [
+                "Integrate Azure Form Recognizer",
+                "Parse and explain form content",
+                "Generate autofilled guidance"
+            ],
+            "input": "image"
+        },
+        {
+            "name": "RAGSearchAgent",
+            "description": "Implements Retrieval-Augmented Generation using government documents with FAISS or Azure Cognitive Search.",
+            "tasks": [
+                "Ingest documents and FAQs",
+                "Connect to FAISS / Azure Cognitive Search",
+                "Return source-based contextual answers"
+            ]
+        },
+        {
+            "name": "AppointmentSchedulerAgent",
+            "description": "Schedules appointments via Microsoft Graph API and sends reminders through Logic Apps or n8n.",
+            "tasks": [
+                "Integrate Microsoft Graph API",
+                "Book calendar events",
+                "Add email/SMS reminders"
+            ]
+        },
+        {
+            "name": "TaskTrackerAgent",
+            "description": "Provides a visual progress UI for users like a pizza tracker for step completion.",
+            "tasks": [
+                "Display visual task tracker",
+                "Update progress state"
+            ]
+        },
+        {
+            "name": "FrontendUIAgent",
+            "description": "Builds user interface with optional mobile support.",
+            "tasks": [
+                "Build React or HTML/CSS UI",
+                "Enable document upload and chat",
+                "Optionally create mobile UI (React Native)"
+            ]
+        },
+        {
+            "name": "WOWFeaturesAgent",
+            "description": "Optional features like AR overlay, sentiment simplification, and translation.",
+            "tasks": [
+                "Overlay insights with Azure Computer Vision",
+                "Use sentiment detection to simplify language",
+                "Add translation layer for multilingual support"
+            ]
+        },
+        {
+            "name": "DemoPrepAgent",
+            "description": "Creates realistic test flows and prepares Devpost deliverables.",
+            "tasks": [
+                "Write test prompts (e.g. SNAP, DMV, tax letter)",
+                "Record demo walkthrough",
+                "Write Devpost submission"
+            ]
+        }
+    ],
+    "state": {
+        "track": "TaskTrackerAgent"
+    },
+    "chains": [
+        {
+            "from": "DocumentParsingAgent",
+            "to": "RAGSearchAgent"
+        },
+        {
+            "from": "RAGSearchAgent",
+            "to": "ChatbotFlowAgent"
+        },
+        {
+            "from": "ChatbotFlowAgent",
+            "to": "TaskTrackerAgent"
+        }
+    ]
+}
