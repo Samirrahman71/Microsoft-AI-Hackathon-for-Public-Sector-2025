@@ -1,0 +1,105 @@
+/* App.css - Additional styles for the App component */
+
+/* Global resets and accessibility styles */
+:root {
+  --primary-color: #0078d4;
+  --primary-dark: #005a9e;
+  --light-bg: #f9f9f9;
+  --text-color: #333;
+  --border-color: #ddd;
+  --success-color: #52c41a;
+  --warning-color: #fa8c16;
+  --error-color: #f5222d;
+}
+
+body {
+  overscroll-behavior: none; /* Prevents bounce on mobile */
+}
+
+/* Focus styles for accessibility */
+:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Button styles */
+button {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+/* Mobile enhancements */
+@media (max-width: 768px) {
+  /* Make buttons more tappable on mobile */
+  button, 
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Increase form input sizes for better mobile usability */
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Prevents zoom on focus in iOS */
+    min-height: 44px;
+  }
+}
+
+/* Dark mode support (if user has dark mode enabled) */
+@media (prefers-color-scheme: dark) {
+  body {
+    --light-bg: #121212;
+    --text-color: #f0f0f0;
+    --border-color: #333;
+    
+    color: var(--text-color);
+    background-color: var(--light-bg);
+  }
+  
+  /* Adjust component colors for dark mode */
+  .light-background {
+    background-color: #1e1e1e;
+  }
+  
+  /* Invert some SVG icons for dark mode */
+  .invert-in-dark {
+    filter: invert(1);
+  }
+}
+
+/* Animation for transitions */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 120, 212, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 120, 212, 0.7);
+}

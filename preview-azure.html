@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Solutions Frontend Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f9f9f9;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .header {
+      background-color: #0078d4;
+      color: white;
+      padding: 0 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 56px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo h1 {
+      margin: 0;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #005a9e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .nav-container {
+      display: flex;
+      background-color: #f3f2f1;
+      border-bottom: 1px solid #e1dfdd;
+    }
+    .nav-bar {
+      display: flex;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+    .nav-item {
+      color: #323130;
+      text-decoration: none;
+      padding: 0.75rem 1.25rem;
+      transition: all 0.2s;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+    .nav-item:hover {
+      background-color: #e1dfdd;
+    }
+    .nav-item.active {
+      color: #0078d4;
+      border-bottom: 2px solid #0078d4;
+      font-weight: 500;
+    }
+    .nav-group {
+      display: none;
+    }
+    .content-area {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    
+    /* Resource Dashboard Styles */
+    .dashboard-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .dashboard-title {
+      color: #0078d4;
+      margin-bottom: 1rem;
+    }
+    .metrics-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .metric-card {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0078d4;
+      margin-bottom: 0.5rem;
+    }
+    .metric-label {
+      font-size: 0.875rem;
+      color: #666;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-input, .filter-select {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .filter-input {
+      flex: 1;
+    }
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .resource-card {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 1.5rem;
+      border-left: 4px solid #52c41a;
+    }
+    .resource-card.warning {
+      border-left-color: #fa8c16;
+    }
+    .resource-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .resource-title {
+      margin: 0;
+      font-weight: 500;
+      color: #333;
+    }
+    .resource-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .status-healthy {
+      background-color: #e6f7ee;
+      color: #52c41a;
+    }
+    .status-warning {
+      background-color: #fff7e6;
+      color: #fa8c16;
+    }
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+    .detail-label {
+      color: #666;
+    }
+    .detail-value {
+      font-weight: 500;
+    }
+    .resource-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .action-button {
+      background-color: transparent;
+      color: #0078d4;
+      border: 1px solid #0078d4;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    
+    /* AI Document Processing Styles */
+    .processor-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .service-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .service-card {
+      flex: 1;
+      min-width: 200px;
+      padding: 1.5rem;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+    .service-card.selected {
+      background-color: #f0f7ff;
+      border: 2px solid #0078d4;
+    }
+    .service-title {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .service-description {
+      font-size: 0.875rem;
+      color: #666;
+      margin: 0;
+    }
+    .processing-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .option-label {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .option-select, .option-input {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .code-block {
+      background-color: #2b2b2b;
+      color: #f8f8f8;
+      padding: 1rem;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+    .config-section {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .button-row {
+      display: flex;
+      gap: 1rem;
+    }
+    .button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .button.primary {
+      background-color: #0078d4;
+      color: white;
+      border: none;
+    }
+    .button.secondary {
+      background-color: transparent;
+      color: #0078d4;
+      border: 1px solid #0078d4;
+    }
+    .result-tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1rem;
+    }
+    .result-tab {
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+    }
+    .result-tab.active {
+      border-bottom: 2px solid #0078d4;
+      color: #0078d4;
+      font-weight: 500;
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .nav-container, .nav-bar {
+        flex-direction: column;
+      }
+      .nav-group {
+        display: block;
+        border-bottom: 1px solid #e1dfdd;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        color: #605e5c;
+      }
+      .nav-item {
+        padding: 0.75rem 1rem;
+        border-bottom: none;
+        border-left: 2px solid transparent;
+      }
+      .nav-item.active {
+        border-bottom: none;
+        border-left: 2px solid #0078d4;
+      }
+      .filter-bar, .button-row {
+        flex-direction: column;
+      }
+      .service-selector {
+        flex-direction: column;
+      }
+      .service-card {
+        min-width: 100%;
+      }
+      .resource-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#fff" d="M11.5 22.994c6.33 0 11.5-5.172 11.5-11.5 0-6.33-5.17-11.5-11.5-11.5S0 5.164 0 11.494c0 6.328 5.17 11.5 11.5 11.5z"/>
+          <path fill="#0078d4" d="M11.5 1.494c5.521 0 10 4.478 10 10 0 5.52-4.479 10-10 10s-10-4.48-10-10c0-5.522 4.479-10 10-10z"/>
+          <path fill="#fff" d="M15 10.494v-3h-7v3H6v2h2v3h7v-3h2v-2h-2zm-5 0v-1h3v1h1v1h-1v1h-3v-1H9v-1h1z"/>
+        </svg>
+        <h1>Azure Solutions</h1>
+      </div>
+      
+      <div class="header-controls">
+        <div class="user-avatar">SE</div>
+      </div>
+    </header>
+    
+    <div class="nav-container">
+      <nav class="nav-bar">
+        <div class="nav-group">Azure Resources</div>
+        <a class="nav-item active" onclick="showTab('dashboard')">Resource Dashboard</a>
+        <a class="nav-item" onclick="showTab('ai-processing')">AI Document Processing</a>
+        
+        <div class="nav-group">Application</div>
+        <a class="nav-item" onclick="showTab('chat')">Chat Interface</a>
+        <a class="nav-item" onclick="showTab('documents')">Document Upload</a>
+        <a class="nav-item" onclick="showTab('tasks')">Task Management</a>
+      </nav>
+    </div>
+    
+    <main class="content-area">
+      <!-- Azure Resource Dashboard -->
+      <div id="dashboard-tab" class="dashboard-container">
+        <h2 class="dashboard-title">Azure Resource Dashboard</h2>
+        
+        <div class="metrics-overview">
+          <div class="metric-card">
+            <div class="metric-value">5</div>
+            <div class="metric-label">Total Resources</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Healthy</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">2</div>
+            <div class="metric-label">Warning</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">0</div>
+            <div class="metric-label">Critical</div>
+          </div>
+        </div>
+        
+        <div class="filter-bar">
+          <input type="text" class="filter-input" placeholder="Search resources...">
+          
+          <select class="filter-select">
+            <option value="all">All Resources</option>
+            <option value="Healthy">Healthy</option>
+            <option value="Warning">Warning</option>
+            <option value="Critical">Critical</option>
+          </select>
+          
+          <select class="filter-select">
+            <option value="all">All Resource Types</option>
+            <option value="App Service Plan">App Service Plan</option>
+            <option value="Function App">Function App</option>
+            <option value="Storage Account">Storage Account</option>
+            <option value="Cognitive Search">Cognitive Search</option>
+            <option value="AI Document Intelligence">AI Document Intelligence</option>
+          </select>
+        </div>
+        
+        <div class="resource-grid">
+          <div class="resource-card">
+            <div class="resource-header">
+              <h3 class="resource-title">App Service Plan (Production)</h3>
+              <span class="resource-status status-healthy">Healthy</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Type:</span>
+              <span class="detail-value">App Service Plan</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Region:</span>
+              <span class="detail-value">East US</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Resource Group:</span>
+              <span class="detail-value">production-rg</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">CPU Usage:</span>
+              <span class="detail-value">42%</span>
+            </div>
+            
+            <div class="resource-actions">
+              <button class="action-button">View Details</button>
+            </div>
+          </div>
+          
+          <div class="resource-card warning">
+            <div class="resource-header">
+              <h3 class="resource-title">Document Processing Function</h3>
+              <span class="resource-status status-warning">Warning</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Type:</span>
+              <span class="detail-value">Function App</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Region:</span>
+              <span class="detail-value">East US</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Executions (24h):</span>
+              <span class="detail-value">87</span>
+            </div>
+            
+            <div class="detail-item">
+              <span class="detail-label">Errors:</span>
+              <span class="detail-value">12</span>
+            </div>
+            
+            <div class="resource-actions">
+              <button class="action-button">View Details</button>
+              <button class="action-button">Restart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- AI Document Processing -->
+      <div id="ai-processing-tab" class="processor-container" style="display: none;">
+        <h2 class="dashboard-title">Azure AI Document Processing</h2>
+        
+        <div class="service-selector">
+          <div class="service-card selected">
+            <div class="service-title">Document Intelligence</div>
+            <div class="service-description">Extract structured data from documents using Azure AI Document Intelligence</div>
+          </div>
+          
+          <div class="service-card">
+            <div class="service-title">Azure OpenAI</div>
+            <div class="service-description">Analyze document content with Azure OpenAI Service for summarization and insights</div>
+          </div>
+          
+          <div class="service-card">
+            <div class="service-title">Azure AI Search</div>
+            <div class="service-description">Index and search documents with Azure AI Search for intelligent content discovery</div>
+          </div>
+        </div>
+        
+        <div class="processing-options">
+          <div class="option-group">
+            <label class="option-label">Model Type</label>
+            <select class="option-select">
+              <option value="prebuilt-invoice">Prebuilt - Invoice</option>
+              <option value="prebuilt-receipt">Prebuilt - Receipt</option>
+              <option value="prebuilt-idDocument">Prebuilt - ID Document</option>
+              <option value="prebuilt-document">Prebuilt - Document</option>
+              <option value="custom">Custom Model</option>
+            </select>
+          </div>
+          
+          <div class="option-group">
+            <label class="option-label">Processing Options</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <input type="checkbox" id="extract-tables" checked>
+              <label for="extract-tables">Extract Tables</label>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <input type="checkbox" id="extract-key-value-pairs" checked>
+              <label for="extract-key-value-pairs">Extract Key-Value Pairs</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="config-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0; font-size: 1.1rem;">Integration Code</h3>
+            <button class="button secondary">Copy Code</button>
+          </div>
+          <div class="code-block">
+// Azure Document Intelligence integration with React
+import { DocumentAnalysisClient } from "@azure/ai-form-recognizer";
+import { AzureKeyCredential } from "@azure/core-auth";
+
+// Your Azure AI Document Intelligence resource information
+const endpoint = "https://your-form-recognizer-resource.cognitiveservices.azure.com/";
+const apiKey = process.env.REACT_APP_FORM_RECOGNIZER_API_KEY;
+
+const analyzeDocument = async (documentFile) => {
+  const client = new DocumentAnalysisClient(
+    endpoint,
+    new AzureKeyCredential(apiKey)
+  );
+  
+  const poller = await client.beginAnalyzeDocument(
+    "prebuilt-invoice",
+    documentFile
+  );
+  
+  const result = await poller.pollUntilDone();
+  return result;
+};</div>
+        </div>
+        
+        <div class="button-row">
+          <button class="button primary">Process Document</button>
+          <button class="button secondary">Save Configuration</button>
+        </div>
+      </div>
+      
+      <!-- Chat Interface (hidden) -->
+      <div id="chat-tab" style="display: none;">
+        <!-- Chat content would go here -->
+        <p>Chat Interface - Click the Azure Resource tabs above to see the new components</p>
+      </div>
+      
+      <!-- Document Upload (hidden) -->
+      <div id="documents-tab" style="display: none;">
+        <!-- Document upload content would go here -->
+        <p>Document Upload - Click the Azure Resource tabs above to see the new components</p>
+      </div>
+      
+      <!-- Task Management (hidden) -->
+      <div id="tasks-tab" style="display: none;">
+        <!-- Task list content would go here -->
+        <p>Task Management - Click the Azure Resource tabs above to see the new components</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      // Hide all tabs
+      document.getElementById('dashboard-tab').style.display = 'none';
+      document.getElementById('ai-processing-tab').style.display = 'none';
+      document.getElementById('chat-tab').style.display = 'none';
+      document.getElementById('documents-tab').style.display = 'none';
+      document.getElementById('tasks-tab').style.display = 'none';
+      
+      // Remove active class from all nav links
+      document.querySelectorAll('.nav-item').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Show selected tab
+      if (tabName === 'dashboard') {
+        document.getElementById('dashboard-tab').style.display = 'flex';
+      } else if (tabName === 'ai-processing') {
+        document.getElementById('ai-processing-tab').style.display = 'flex';
+      } else if (tabName === 'chat') {
+        document.getElementById('chat-tab').style.display = 'block';
+      } else if (tabName === 'documents') {
+        document.getElementById('documents-tab').style.display = 'block';
+      } else if (tabName === 'tasks') {
+        document.getElementById('tasks-tab').style.display = 'block';
+      }
+      
+      // Add active class to selected nav link
+      document.querySelectorAll('.nav-item').forEach(link => {
+        if (link.textContent.toLowerCase().includes(tabName.replace('-', ' '))) {
+          link.classList.add('active');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
