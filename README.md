@@ -2,6 +2,16 @@
 
 A modern interface for government services that simplifies citizen interactions with government agencies through an AI-powered assistant.
 
+## Screenshots
+
+### Government Assistant & Task Tracker
+
+![Government Assistant and Task Tracker](screenshots/govflow-assistant.png)
+
+### Document Processing & Appointment Scheduler
+
+![Document Processing and Appointment Scheduler](screenshots/govflow-appointments.png)
+
 ## Features
 
 - **Government Assistant Chat**: Natural language interface for asking questions and getting assistance with government services
