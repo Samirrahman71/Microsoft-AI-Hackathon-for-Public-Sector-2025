@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMV Services</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: #003366;
+            color: white;
+            padding: 15px 20px;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .required::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4285f4;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        .row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .col {
+            flex: 1;
+        }
+        
+        button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: #3367d6;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .status.success {
+            background-color: #e6f4ea;
+            color: #137333;
+            display: block;
+        }
+        
+        .status.error {
+            background-color: #fce8e6;
+            color: #c5221f;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Department of Motor Vehicles</h2>
+        <p>Online Services Portal</p>
+    </div>
+    
+    <div class="form-container">
+        <h3>Personal Information Update Form</h3>
+        <div id="status" class="status"></div>
+        
+        <form id="dmvForm">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="name" class="required">Full Name</label>
+                        <input type="text" id="name" name="name" value="{{ form_data.name }}" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="license_number" class="required">Driver's License Number</label>
+                        <input type="text" id="license_number" name="license_number" value="{{ form_data.license_number }}" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="address" class="required">Current Address</label>
+                <input type="text" id="address" name="address" value="{{ form_data.address }}" required>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="phone" class="required">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" value="{{ form_data.phone }}" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="email" class="required">Email Address</label>
+                        <input type="email" id="email" name="email" value="{{ form_data.email }}" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="dob" class="required">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" value="{{ form_data.dob }}" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="ssn_last_4" class="required">Last 4 digits of SSN</label>
+                        <input type="password" id="ssn_last_4" name="ssn_last_4" value="{{ form_data.ssn_last_4 }}" maxlength="4" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_type" class="required">ID Type</label>
+                <select id="id_type" name="id_type" required>
+                    <option value="">Select ID Type</option>
+                    <option value="driver_license" {% if form_data.id_type == 'driver_license' %}selected{% endif %}>Driver's License</option>
+                    <option value="state_id" {% if form_data.id_type == 'state_id' %}selected{% endif %}>State ID</option>
+                    <option value="enhanced_id" {% if form_data.id_type == 'enhanced_id' %}selected{% endif %}>Enhanced ID</option>
+                </select>
+            </div>
+            
+            <button type="submit">Submit Form</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('dmvForm');
+        const status = document.getElementById('status');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                license_number: document.getElementById('license_number').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                dob: document.getElementById('dob').value,
+                ssn_last_4: document.getElementById('ssn_last_4').value,
+                id_type: document.getElementById('id_type').value
+            };
+            
+            try {
+                const response = await fetch('/api/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    status.textContent = 'Form submitted successfully!';
+                    status.className = 'status success';
+                } else {
+                    status.textContent = 'Error submitting form. Please try again.';
+                    status.className = 'status error';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = 'Error submitting form. Please try again.';
+                status.className = 'status error';
+            }
+        });
+
+        // Auto-update form when changes are made through the API
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/get-form-data');
+                const data = await response.json();
+                
+                // Update form fields with new data
+                for (const [key, value] of Object.entries(data)) {
+                    const element = document.getElementById(key);
+                    if (element && value) {
+                        element.value = value;
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching form data:', error);
+            }
+        }, 2000);
+    </script>
+</body>
+</html> 

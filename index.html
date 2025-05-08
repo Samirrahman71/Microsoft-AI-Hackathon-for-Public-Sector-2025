@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovFlow AI</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Header styles */
+        .header {
+            background-color: #4285f4;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item i {
+            margin-right: 5px;
+        }
+        
+        .right-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .language-select {
+            margin-right: 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #fff;
+            background-color: transparent;
+            color: white;
+        }
+        
+        .sign-in-btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sign-in-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Main content */
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Left panel - Assistant */
+        .panel {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            color: #4285f4;
+            font-weight: 500;
+        }
+        
+        .panel-actions button {
+            background-color: #f1f3f4;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #4285f4;
+        }
+        
+        /* Chat area */
+        .chat-area {
+            min-height: 300px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .bot-message {
+            background-color: #4285f4;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 18px;
+            display: inline-block;
+        }
+        
+        .bot-response {
+            background-color: #f1f3f4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .bot-response ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        
+        .bot-response li {
+            margin-bottom: 5px;
+        }
+        
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            background-color: #fff;
+        }
+        
+        .input-area input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 8px;
+            font-size: 14px;
+        }
+        
+        .input-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .input-controls button {
+            margin: 0 10px;
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            color: #5f6368;
+            cursor: pointer;
+        }
+        
+        .input-controls button i {
+            margin-right: 5px;
+        }
+        
+        /* Right panel - Checklist and Appointments */
+        .checklist-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #4caf50;
+            width: 10%;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .checklist-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .checklist-category {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .category-icon {
+            margin-right: 10px;
+            color: #4285f4;
+        }
+        
+        /* Document processing */
+        .document-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .document-icon {
+            color: #4285f4;
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .supported-formats {
+            color: #70757a;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        /* Appointment scheduling */
+        .appointment-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .time-slot:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .time-slot.selected {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+            color: #4285f4;
+        }
+        
+        .book-btn {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            width: 100%;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #202124;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .footer a {
+            color: #8ab4f8;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        /* New button */
+        .new-btn {
+            background-color: white;
+            color: #4285f4;
+            border: 1px solid #ddd;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .new-btn:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Two-column layout for mobile */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-landmark"></i>
+            GovFlow AI
+        </div>
+        <div class="nav">
+            <a href="#" class="nav-item">
+                <i class="fas fa-comment-dots"></i>
+                Assistant
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                Documents
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-tasks"></i>
+                Tasks
+            </a>
+            <a href="#" class="nav-item">
+                <i class="far fa-calendar-alt"></i>
+                Appointments
+            </a>
+        </div>
+        <div class="right-nav">
+            <select class="language-select">
+                <option>English</option>
+                <option>Español</option>
+                <option>Français</option>
+            </select>
+            <button class="sign-in-btn">
+                <i class="fas fa-user"></i>
+                Sign In
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Left Panel - Assistant -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Government Assistant</h2>
+                <div class="panel-actions">
+                    <button>
+                        <i class="fas fa-history"></i>
+                        History
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-area">
+                <div class="message">
+                    <div class="bot-message">Hi there! I'd like help moving to a new city.</div>
+                </div>
+                <div class="bot-response">
+                    <p>I can help you with your move! When you move to a new location, you'll need to update your address with several government agencies:</p>
+                    <ul>
+                        <li>USPS Change of Address form</li>
+                        <li>DMV for driver's license and vehicle registration</li>
+                        <li>Voter registration</li>
+                        <li>IRS address change</li>
+                    </ul>
+                    <p>I've added a Moving Checklist to your Task Tracker to help you keep track of everything.</p>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" placeholder="Ask a question about government services...">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+
+            <div class="input-controls">
+                <button>
+                    <i class="fas fa-font"></i>
+                    Text
+                </button>
+                <button>
+                    <i class="fas fa-microphone"></i>
+                    Voice
+                </button>
+                <button>
+                    <i class="fas fa-camera"></i>
+                    Camera
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Panel - Checklist and Appointments -->
+        <div class="panel">
+            <!-- Moving Checklist -->
+            <div class="checklist-container">
+                <div class="panel-header">
+                    <h2 class="panel-title">Moving Checklist</h2>
+                    <button class="new-btn">
+                        <i class="fas fa-plus"></i>
+                        New
+                    </button>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <p>10% Complete</p>
+
+                <!-- Update Address -->
+                <div class="checklist-category">
+                    <div class="category-header">
+                        <div>
+                            <i class="fas fa-home category-icon"></i>
+                            Update Address
+                        </div>
+                        <div>0%</div>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <input type="checkbox" id="usps" checked>
+                        <label for="usps">USPS Change of Address</label>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmv">
+                        <label for="dmv">DMV Address Update</label>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <input type="checkbox" id="voter">
+                        <label for="voter">Voter Registration Update</label>
+                    </div>
+                    
+                    <div class="checklist-item">
+                        <input type="checkbox" id="irs">
+                        <label for="irs">IRS Address Change</label>
+                    </div>
+                </div>
+
+                <!-- Set Up Utilities -->
+                <div class="checklist-category">
+                    <div class="category-header">
+                        <div>
+                            <i class="fas fa-plug category-icon"></i>
+                            Set Up Utilities
+                        </div>
+                        <div>0%</div>
+                    </div>
+                </div>
+
+                <!-- Local Registration -->
+                <div class="checklist-category">
+                    <div class="category-header">
+                        <div>
+                            <i class="fas fa-map-marker-alt category-icon"></i>
+                            Local Registration
+                        </div>
+                        <div>0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule Appointment -->
+            <div>
+                <div class="panel-header">
+                    <h2 class="panel-title">Schedule Appointment</h2>
+                    <button class="new-btn">
+                        <i class="far fa-calendar"></i>
+                        Calendar
+                    </button>
+                </div>
+                
+                <div class="appointment-form">
+                    <div class="form-group">
+                        <label>Appointment Type</label>
+                        <select class="form-control">
+                            <option>Select an appointment type</option>
+                            <option>Driver's License</option>
+                            <option>Vehicle Registration</option>
+                            <option>ID Card</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Location</label>
+                        <select class="form-control">
+                            <option>Select a location</option>
+                            <option>Downtown Office</option>
+                            <option>West Branch</option>
+                            <option>East Side Location</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    
+                    <div class="time-slots">
+                        <div class="time-slot">9:00 AM</div>
+                        <div class="time-slot">9:30 AM</div>
+                        <div class="time-slot">10:00 AM</div>
+                        <div class="time-slot">10:30 AM</div>
+                        <div class="time-slot selected">11:00 AM</div>
+                        <div class="time-slot">11:30 AM</div>
+                        <div class="time-slot">1:00 PM</div>
+                        <div class="time-slot">1:30 PM</div>
+                        <div class="time-slot">2:00 PM</div>
+                    </div>
+                    
+                    <button class="book-btn">
+                        <i class="far fa-calendar-check"></i>
+                        Book Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Processing (Shown in Second Screenshot) -->
+    <div class="main-content">
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Document Processing</h2>
+                <div class="panel-actions">
+                    <button>
+                        <i class="fas fa-history"></i>
+                        Recent
+                    </button>
+                </div>
+            </div>
+            
+            <div class="document-area">
+                <div class="document-icon">
+                    <i class="fas fa-file-upload"></i>
+                </div>
+                <p>Drag and drop a government document here, or click to select a file</p>
+                <p class="supported-formats">Supported formats: PDF, JPG, PNG</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 GovFlow AI | <a href="#">Home</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+
+    <script>
+        // Basic interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle time slot selection
+            const timeSlots = document.querySelectorAll('.time-slot');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Chat functionality
+            const chatInput = document.querySelector('.input-area input');
+            const chatArea = document.querySelector('.chat-area');
+            
+            function sendMessage(text) {
+                if (text.trim() === '') return;
+                
+                // Add user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user-message';
+                userMessage.innerHTML = `<div class="bot-message">${text}</div>`;
+                chatArea.appendChild(userMessage);
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate assistant response
+                setTimeout(() => {
+                    const botResponse = document.createElement('div');
+                    botResponse.className = 'bot-response';
+                    botResponse.innerHTML = `<p>I understand you're asking about "${text}". I'll need to research this and get back to you. In the meantime, is there anything else I can help you with?</p>`;
+                    chatArea.appendChild(botResponse);
+                    
+                    // Scroll to bottom
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }, 1000);
+            }
+            
+            // Send message on Enter
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage(this.value);
+                }
+            });
+            
+            // Send message on paper plane icon click
+            const sendButton = document.querySelector('.input-area .fa-paper-plane');
+            sendButton.addEventListener('click', function() {
+                sendMessage(chatInput.value);
+            });
+            
+            // Toggle checkbox functionality
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateProgress();
+                });
+            });
+            
+            // Update progress bar
+            function updateProgress() {
+                const total = checkboxes.length;
+                const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                const percentage = Math.round((checked / total) * 100);
+                
+                document.querySelector('.progress').style.width = `${percentage}%`;
+                document.querySelector('.checklist-container p').textContent = `${percentage}% Complete`;
+            }
+            
+            // Simulate document drop functionality
+            const dropArea = document.querySelector('.document-area');
+            dropArea.addEventListener('click', function() {
+                alert('File selection dialog would open here');
+            });
+            
+            // Make appointment button
+            const bookButton = document.querySelector('.book-btn');
+            bookButton.addEventListener('click', function() {
+                alert('Appointment booking would be processed here');
+            });
+        });
+    </script>
+</body>
+</html>

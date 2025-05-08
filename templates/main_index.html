@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovFlow AI</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Header styles */
+        .header {
+            background-color: #4285f4;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item i {
+            margin-right: 5px;
+        }
+        
+        .right-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .language-select {
+            margin-right: 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #fff;
+            background-color: transparent;
+            color: white;
+        }
+        
+        .sign-in-btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sign-in-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Main content */
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Left panel - Assistant */
+        .panel {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            color: #4285f4;
+            font-weight: 500;
+        }
+        
+        .panel-actions button {
+            background-color: #f1f3f4;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #4285f4;
+        }
+        
+        /* Chat area */
+        .chat-area {
+            min-height: 300px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .bot-message {
+            background-color: #4285f4;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 18px;
+            display: inline-block;
+        }
+        
+        .bot-response {
+            background-color: #f1f3f4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .bot-response ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        
+        .bot-response li {
+            margin-bottom: 5px;
+        }
+        
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            background-color: #fff;
+        }
+        
+        .input-area input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 8px;
+            font-size: 14px;
+        }
+        
+        .input-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .input-controls button {
+            margin: 0 10px;
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            color: #5f6368;
+            cursor: pointer;
+        }
+        
+        .input-controls button i {
+            margin-right: 5px;
+        }
+        
+        /* Right panel - DMV Form Preview */
+        .dmv-preview {
+            flex: 1;
+        }
+        
+        .dmv-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #202124;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .footer a {
+            color: #8ab4f8;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        /* Two-column layout for mobile */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-landmark"></i>
+            GovFlow AI
+        </div>
+        <div class="nav">
+            <a href="#" class="nav-item">
+                <i class="fas fa-comment-dots"></i>
+                Assistant
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                Documents
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-tasks"></i>
+                Tasks
+            </a>
+            <a href="#" class="nav-item">
+                <i class="far fa-calendar-alt"></i>
+                Appointments
+            </a>
+        </div>
+        <div class="right-nav">
+            <select class="language-select">
+                <option>English</option>
+                <option>Español</option>
+                <option>Français</option>
+            </select>
+            <button class="sign-in-btn">
+                <i class="fas fa-user"></i>
+                Sign In
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Left Panel - Assistant -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Government Assistant</h2>
+                <div class="panel-actions">
+                    <button>
+                        <i class="fas fa-history"></i>
+                        History
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-area" id="chatArea">
+                <div class="message">
+                    <div class="bot-message">Hi there! I'm your government services assistant. How can I help you today?</div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Ask a question about government services...">
+                <i class="fas fa-paper-plane" onclick="sendMessage()"></i>
+            </div>
+
+            <div class="input-controls">
+                <button>
+                    <i class="fas fa-font"></i>
+                    Text
+                </button>
+                <button>
+                    <i class="fas fa-microphone"></i>
+                    Voice
+                </button>
+                <button>
+                    <i class="fas fa-camera"></i>
+                    Camera
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Panel - DMV Form Preview -->
+        <div class="panel dmv-preview">
+            <div class="panel-header">
+                <h2 class="panel-title">DMV Form Preview</h2>
+            </div>
+            <iframe src="http://localhost:5001" class="dmv-iframe"></iframe>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 GovFlow AI | <a href="#">Home</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const userInput = document.getElementById('userInput');
+
+        function addMessage(message, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : ''}`;
+            messageDiv.innerHTML = `<div class="bot-message">${message}</div>`;
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, true);
+            userInput.value = '';
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                addMessage(data.response, false);
+
+                // Refresh the DMV form iframe to show updates
+                if (Object.keys(data.form_data).length > 0) {
+                    document.querySelector('.dmv-iframe').contentWindow.location.reload();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('Sorry, there was an error processing your request.', false);
+            }
+        }
+
+        // Send message on Enter
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 
