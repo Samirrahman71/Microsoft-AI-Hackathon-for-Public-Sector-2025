@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-style: italic;
+      fill: #ffffff;
+    }
+    .line {
+      stroke: #ffffff;
+      stroke-width: 5;
+    }
+  </style>
+  <text x="50" y="250" font-size="180">GovChat</text>
+  <line x1="70" y1="280" x2="700" y2="280" class="line" />
+  <line x1="70" y1="310" x2="650" y2="310" class="line" />
+  <line x1="70" y1="340" x2="600" y2="340" class="line" />
+  <line x1="70" y1="370" x2="550" y2="370" class="line" />
+</svg>

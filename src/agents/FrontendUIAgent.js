@@ -55,7 +55,7 @@ class FrontendUIAgent {
         desktop: {
           header: {
             type: 'header',
-            title: 'GovFlow AI',
+            title: 'GovChat',
             components: ['LanguageSelector']
           },
           main: {
@@ -98,7 +98,7 @@ class FrontendUIAgent {
       uiConfig.layout.mobile = {
         header: {
           type: 'mobile-header',
-          title: 'GovFlow AI',
+          title: 'GovChat',
           components: ['MobileNavigation']
         },
         screens: {

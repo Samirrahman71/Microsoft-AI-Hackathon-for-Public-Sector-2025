@@ -1,8 +1,8 @@
 /**
- * GovFlow AI - Main Application Entry Point
+ * GovChat - Main Application Entry Point
  * 
  * This file initializes all agents and sets up the API routes
- * for the GovFlow AI application.
+ * for the GovChat application.
  */
 const express = require('express');
 const multer = require('multer');
@@ -302,7 +302,7 @@ app.get('/api/ui/config', (req, res) => {
 // Initialize the application
 async function initializeApp() {
   try {
-    console.log('Initializing GovFlow AI...');
+    console.log('Initializing GovChat...');
     
     // Validate Azure OpenAI setup
     const azureValidation = await azureSetupAgent.validateSetup();
@@ -316,7 +316,7 @@ async function initializeApp() {
     
     // Start the server
     app.listen(port, () => {
-      console.log(`GovFlow AI server running on port ${port}`);
+      console.log(`GovChat server running on port ${port}`);
       console.log(`API available at http://localhost:${port}/api`);
       console.log(`Frontend available at http://localhost:${port}`);
     });

@@ -1,4 +1,4 @@
-// GovFlow AI Application JavaScript
+// GovChat Application JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
   // Navigation functionality

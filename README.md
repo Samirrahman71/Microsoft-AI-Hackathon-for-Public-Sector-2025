@@ -1,4 +1,4 @@
-# GovFlow AI (testrepo)
+# GovChat (testrepo)
 
 A modern interface for government services that simplifies citizen interactions with government agencies through an AI-powered assistant.
 
@@ -6,13 +6,11 @@ A modern interface for government services that simplifies citizen interactions 
 
 ### Government Assistant & Task Tracker
 
-<img width="1440" alt="Screenshot 2025-05-06 at 2 39 56 AM" src="https://github.com/user-attachments/assets/1d857b5a-f24e-4398-9c0c-9ad5f0dc8011" />
-
-
+![Screenshot 2025-05-06 at 2 39 56 AM](https://github.com/user-attachments/assets/1d857b5a-f24e-4398-9c0c-9ad5f0dc8011)
 
 ### Document Processing & Appointment Scheduler
 
-<img width="1440" alt="Screenshot 2025-05-06 at 2 39 59 AM" src="https://github.com/user-attachments/assets/a9ca6c7b-1eff-4f00-be09-e5ba09d488e4" />
+![Screenshot 2025-05-06 at 2 39 59 AM](https://github.com/user-attachments/assets/a9ca6c7b-1eff-4f00-be09-e5ba09d488e4)
 
 ## Features
 
