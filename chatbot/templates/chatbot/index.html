@@ -1,0 +1,268 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GovFlow AI</title>
+  <link rel="stylesheet" href="{% static 'chatbot/css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- App Header Bar -->
+  <header class="app-header">
+    <div class="app-logo">
+      <i class="fas fa-landmark"></i>
+      <h1>GovFlow AI</h1>
+    </div>
+    <nav class="app-nav">
+      <a href="#" class="active"><i class="fas fa-comments"></i> Assistant</a>
+      <a href="#"><i class="fas fa-file-alt"></i> Documents</a>
+      <a href="#"><i class="fas fa-tasks"></i> Tasks</a>
+      <a href="#"><i class="fas fa-calendar"></i> Appointments</a>
+    </nav>
+    <div class="app-controls">
+      <select class="language-selector">
+        <option selected>English</option>
+        <option>Español</option>
+      </select>
+      <button class="sign-in-btn"><i class="fas fa-user"></i> Sign In</button>
+    </div>
+  </header>
+
+  <div class="container" id="container">
+    <!-- Left Side - Chat -->
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>Government Assistant</h2>
+        <button class="history-btn"><i class="fas fa-history"></i> History</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+          <div class="message-content">
+            Hello! I'm your Government Assistant. How can I help you today?
+          </div>
+        </div>
+      </div>
+      <div class="typing-indicator" id="typing-indicator">
+        <div class="message-content">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+      <form id="chat-form" class="chat-input">
+        <input type="text" id="user-input" placeholder="Ask a question about government services..." />
+        <div class="input-actions">
+          <button type="button" class="input-action-btn"><i class="fas fa-microphone"></i></button>
+          <button type="button" class="input-action-btn"><i class="fas fa-camera"></i></button>
+        </div>
+        <button type="submit" class="send-button" id="send-button">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+    
+    <!-- Right Side - Task Tracker -->
+    <div class="task-tracker">
+      <div class="task-header">
+        <h2>Moving Checklist</h2>
+        <button class="new-btn"><i class="fas fa-plus"></i> New</button>
+      </div>
+      
+      <div class="progress-bar">
+        <div class="progress" style="width: 10%;"></div>
+        <span class="progress-text">10% Complete</span>
+      </div>
+      
+      <div class="task-list">
+        <div class="task-group">
+          <div class="task-group-header">
+            <i class="fas fa-sync-alt"></i>
+            <h3>Update Address</h3>
+            <span class="completion">0%</span>
+          </div>
+          
+          <div class="task-items">
+            <div class="task-item">
+              <input type="checkbox" id="usps" checked>
+              <label for="usps">USPS Change of Address</label>
+            </div>
+            <div class="task-item">
+              <input type="checkbox" id="dmv">
+              <label for="dmv">DMV Address Update</label>
+            </div>
+            <div class="task-item">
+              <input type="checkbox" id="voter">
+              <label for="voter">Voter Registration Update</label>
+            </div>
+            <div class="task-item">
+              <input type="checkbox" id="irs">
+              <label for="irs">IRS Address Change</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="task-group">
+          <div class="task-group-header">
+            <i class="fas fa-home"></i>
+            <h3>Set Up Utilities</h3>
+            <span class="completion">0%</span>
+          </div>
+        </div>
+        
+        <div class="task-group">
+          <div class="task-group-header">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Local Registration</h3>
+            <span class="completion">0%</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="appointment-section">
+        <h3>Schedule Appointment</h3>
+        <button class="calendar-btn"><i class="fas fa-calendar"></i> Calendar</button>
+      </div>
+    </div>
+
+    <!-- Form Container (will overlay when active) -->
+    <div class="form-container" id="form-container">
+      <!-- Clickable overlay to allow clicking outside to close -->
+      <div class="form-overlay" id="form-overlay"></div>
+      <div class="form-content-wrapper">
+        <div class="form-header">
+          <h2 id="form-title">DMV Change of Address Form</h2>
+          <button class="close-form" id="close-form" aria-label="Close form"><i class="fas fa-times"></i></button>
+        </div>
+      <div class="form-content">
+        <form id="dmv-form">
+          <div class="form-section">
+            <h3>Personal Information</h3>
+            <div class="form-group">
+              <label for="full-name">Full Name</label>
+              <input type="text" class="form-control" id="full-name" placeholder="Enter your full name">
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="date-of-birth">Date of Birth</label>
+                  <input type="date" class="form-control" id="date-of-birth">
+                </div>
+              </div>
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="driver-license">Driver's License Number</label>
+                  <input type="text" class="form-control" id="driver-license" placeholder="Enter license number">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>Previous Address</h3>
+            <div class="form-group">
+              <label for="prev-street">Street Address</label>
+              <input type="text" class="form-control" id="prev-street" placeholder="Enter street address">
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="prev-city">City</label>
+                  <input type="text" class="form-control" id="prev-city" placeholder="Enter city">
+                </div>
+              </div>
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="prev-state">State</label>
+                  <input type="text" class="form-control" id="prev-state" placeholder="Enter state">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="prev-zip">ZIP Code</label>
+                  <input type="text" class="form-control" id="prev-zip" placeholder="Enter ZIP code">
+                </div>
+              </div>
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="prev-county">County</label>
+                  <input type="text" class="form-control" id="prev-county" placeholder="Enter county">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>New Address</h3>
+            <div class="form-group">
+              <label for="new-street">Street Address</label>
+              <input type="text" class="form-control" id="new-street" placeholder="Enter street address">
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="new-city">City</label>
+                  <input type="text" class="form-control" id="new-city" placeholder="Enter city">
+                </div>
+              </div>
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="new-state">State</label>
+                  <input type="text" class="form-control" id="new-state" placeholder="Enter state">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="new-zip">ZIP Code</label>
+                  <input type="text" class="form-control" id="new-zip" placeholder="Enter ZIP code">
+                </div>
+              </div>
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="new-county">County</label>
+                  <input type="text" class="form-control" id="new-county" placeholder="Enter county">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>Contact Information</h3>
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" class="form-control" id="email" placeholder="Enter email address">
+                </div>
+              </div>
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" class="form-control" id="phone" placeholder="Enter phone number">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" id="cancel-form">Cancel</button>
+            <button type="submit" class="submit-btn">Submit Form</button>
+          </div>
+          
+          <p class="form-disclaimer">
+            This is a demonstration form for a government hackathon. In a real application, sensitive information would be securely transmitted using encryption.
+          </p>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'chatbot/js/chat.js' %}"></script>
+</body>
+</html>
