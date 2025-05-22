@@ -2,7 +2,7 @@
 
 # 🏆 GovFlow AI
 
-### 1st Place Winner - AI Hackathon for Public Sector 2025
+### 1st Place Winner - Microsoft AI Hackathon for Public Sector 2025
 
 *Accelerating San Jose's AI Transformation with Gen-AI Powered Citizen Chatbots, Copilot Studio, and Data Security*
 
