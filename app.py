@@ -77,22 +77,31 @@ def home():
 def chat():
     data = request.json
     user_message = data.get('message', '')
+    # Get location from request, default to California
+    user_location = data.get('location', 'California')
 
     # Add user message to conversation history
     conversation_history.append({"role": "user", "content": user_message})
 
-    # Create a system message that includes DMV form context
-    system_message = """You are a helpful DMV assistant. You can help users fill out DMV forms.
-    When users want to update their address, collect the following information:
-    - Current address
-    - New address
-    - License number (format: DL1234567)
-    - Phone number
-    - Email address
-    
-    Guide users through the process by asking for one piece of information at a time.
-    If you receive multiple pieces of information, acknowledge them all.
-    Once you have all the information, inform the user that they can submit the form."""
+    # Load the MCP system prompt
+    try:
+        with open('mcp_location_prompt.txt', 'r') as f:
+            system_prompt = f.read()
+    except FileNotFoundError:
+        system_prompt = """You are a helpful government services assistant. You can help users with various government services and forms.
+        When users want to update their address, collect the following information:
+        - Current address
+        - New address
+        - License number (format: DL1234567)
+        - Phone number
+        - Email address
+        
+        Guide users through the process by asking for one piece of information at a time.
+        If you receive multiple pieces of information, acknowledge them all.
+        Once you have all the information, inform the user that they can submit the form."""
+
+    # Add location context to the system message
+    system_message = f"{system_prompt}\n\nCurrent user location: {user_location}"
 
     try:
         # Prepare messages for the API call
@@ -100,7 +109,7 @@ def chat():
                     ] + conversation_history[-5:]  # Keep last 5 messages
 
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=messages
         )
 
@@ -117,7 +126,8 @@ def chat():
 
         return jsonify({
             'response': bot_response,
-            'form_data': dmv_forms['address_update']
+            'form_data': dmv_forms['address_update'],
+            'location': user_location  # Include location in response
         })
 
     except Exception as e:
