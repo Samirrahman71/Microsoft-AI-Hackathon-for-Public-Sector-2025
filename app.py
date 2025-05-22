@@ -70,7 +70,7 @@ def extract_form_data(message):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('chatbot/index.html')
 
 
 @app.route('/api/chat', methods=['POST'])
@@ -162,4 +162,4 @@ def submit_dmv_form():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
