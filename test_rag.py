@@ -37,7 +37,7 @@ def test_rag_system():
     ]
     
     # Test system prompt
-    system_prompt = """You are GovChat, a helpful government services assistant. 
+    system_prompt = """You are GovFlowAI, a helpful government services assistant. 
     Provide accurate, specific information about government services based on the context provided.
     Keep responses concise and direct, focusing on actionable steps the user can take.
     If the information isn't in the provided context, say so clearly."""

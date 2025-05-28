@@ -14,7 +14,7 @@ knowledge_base_dir = os.path.join(os.path.dirname(__file__), 'knowledge_base')
 rag_system = None
 
 # System prompt for the chatbot
-system_prompt = """You are GovChat, an AI assistant for government services in California. 
+system_prompt = """You are GovFlowAI, an AI assistant for government services in California. 
 
 When a user asks a question:
 1. Check if the query is clear and specific. If ambiguous or missing details, politely ask for clarification before answering.
@@ -31,7 +31,7 @@ HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GovChat with RAG</title>
+    <title>GovFlowAI with RAG</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,14 +128,14 @@ HTML_TEMPLATE = '''
 </head>
 <body>
     <div class="header">
-        <h1>GovChat with RAG</h1>
+        <h1>GovFlowAI with RAG</h1>
         <p>Retrieval-Augmented Generation for Government Services</p>
     </div>
     
     <div class="chat-container">
         <div id="chat-history">
             <div class="message bot-message">
-                Hello! I'm GovChat, enhanced with Retrieval-Augmented Generation. I can provide information about California government services, including DMV services, tax information, and benefits programs. How can I help you today?
+                Hello! I'm GovFlowAI, enhanced with Retrieval-Augmented Generation. I can provide information about California government services, including DMV services, tax information, and benefits programs. How can I help you today?
             </div>
         </div>
         

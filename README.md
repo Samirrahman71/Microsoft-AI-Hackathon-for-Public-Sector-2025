@@ -4,6 +4,10 @@
 
 ### 1st Place Winner - Microsoft AI Hackathon for Public Sector 2025
 
+## GovFlowAI: Enhanced with Retrieval-Augmented Generation (RAG)
+
+This project was developed for the Microsoft AI Hackathon for Public Sector 2025. GovFlowAI is an AI-powered chatbot designed to provide accurate, location-specific information about government services.
+
 *Accelerating San Jose's AI Transformation with Gen-AI Powered Citizen Chatbots, Copilot Studio, and Data Security*
 
 [Features](#features) • [Demo](#demo) • [Architecture](#architecture) • [Setup](#setup) • [Team](#team)
@@ -25,6 +29,17 @@ GovFlow AI is an award-winning, modern interface for government services that re
 <img width="1440" alt="GovFlow AI Document Processing and Appointment Scheduler" src="https://github.com/user-attachments/assets/a9ca6c7b-1eff-4f00-be09-e5ba09d488e4" />
 
 ## ✨ Features
+
+### RAG-Enhanced Responses
+
+The chatbot has been enhanced with Retrieval-Augmented Generation (RAG) capabilities to provide more accurate and verifiable information about government services:
+
+- **Knowledge Base Integration**: Retrieves information from a curated knowledge base of government services
+- **Contextual Responses**: Enhances LLM responses with relevant retrieved information
+- **Source Attribution**: Provides sources for information to increase trustworthiness
+- **Reduced Hallucinations**: Minimizes incorrect information by grounding responses in verified content
+
+For more details about the RAG implementation, see [README_RAG.md](README_RAG.md).
 
 - **AI-Powered Government Assistant**: Advanced natural language processing for intuitive assistance with government services
 - **Intelligent Forms**: Smart forms that adapt based on user needs with pre-filled information

@@ -1,5 +1,5 @@
 """
-RAG (Retrieval-Augmented Generation) System for GovChat
+RAG (Retrieval-Augmented Generation) System for GovFlowAI
 
 This module provides functionality to:
 1. Process and index documents for a knowledge base

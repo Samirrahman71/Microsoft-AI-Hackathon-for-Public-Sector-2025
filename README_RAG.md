@@ -1,6 +1,6 @@
-# RAG Implementation for GovChat
+# RAG Implementation for GovFlowAI
 
-This document explains how Retrieval-Augmented Generation (RAG) has been implemented to enhance the GovChat application's ability to provide accurate information about government services.
+This document explains how Retrieval-Augmented Generation (RAG) has been implemented to enhance the GovFlowAI application's ability to provide accurate information about government services.
 
 ## What is RAG?
 
@@ -10,7 +10,7 @@ Retrieval-Augmented Generation (RAG) combines the power of large language models
 2. Provides this information as context to the language model
 3. Allows the model to generate more accurate, up-to-date, and verifiable responses
 
-## How It Works in GovChat
+## How It Works in GovFlowAI
 
 ### Architecture Overview
 
@@ -81,7 +81,7 @@ To evaluate how well the RAG system is working:
 3. Verify that sources are correctly cited
 4. Look for improved accuracy on government service questions
 
-## Benefits of RAG for GovChat
+## Benefits of RAG for GovFlowAI
 
 1. **Improved Accuracy**: Responses based on verified information rather than general knowledge
 2. **Reduced Hallucinations**: Less risk of generating incorrect information
