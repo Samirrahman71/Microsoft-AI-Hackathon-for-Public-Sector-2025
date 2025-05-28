@@ -5,7 +5,11 @@ from django.conf import settings
 import openai
 import json
 import re
+import os
 from pathlib import Path
+
+# Import the RAG system
+from .rag_system import RAGSystem
 
 # Configure OpenAI
 openai.api_key = settings.OPENAI_API_KEY
@@ -211,74 +215,98 @@ def home(request):
 
 @api_view(['POST'])
 def chat(request):
-    try:
-        message = request.data.get('message', '').strip()
-        location = request.data.get('location', 'California')
-
-        if not message:
-            return Response({'error': 'Message is required'}, status=400)
-
-        # Extract intent if message is about DMV services
-        intent = extract_intent(message)
-
-        # Get form template if applicable
+    # Parse request data
+    data = request.data
+    user_message = data.get('message', '')
+    user_location = data.get('location', 'California')
+    
+    # Extract intent
+    intent = extract_intent(user_message)
+    
+    # Get form template if an intent is detected
+    form_template = None
+    if intent:
         form_template = get_form_template(intent)
-
-        # Extract any form data from the message
-        form_data = extract_form_data(message, intent)
-
-        # Prepare the system message
-        system_message = f"""You are a California DMV assistant. You can only help with the following services:
-        - Address changes
-        - License replacement
-        - Vehicle registration
-        - Vehicle transfer
-        - License renewal
-        - Vehicle title
-        - New resident services
-        - REAL ID
-        - DMV appointments
-        - Fix-it tickets
-        - Speeding tickets
-        - Expired registration
-        - Smog checks
-
-        The user is in {location}. Provide specific information about California DMV procedures and requirements.
-        If the user needs a form, indicate that you'll help them fill it out. If no form is associated with the intent, provide helpful information and guidance.
-        """
-
-        # Get response from OpenAI
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": message}
-            ],
-            temperature=0.7,
-            max_tokens=250
+        
+    # Extract form data if an intent is detected
+    form_data = {}
+    if intent:
+        form_data = extract_form_data(user_message, intent)
+    
+    # Load the system prompt for the chatbot
+    try:
+        system_prompt_path = Path(__file__).resolve().parent.parent / 'mcp_location_prompt.txt'
+        with open(system_prompt_path, 'r') as f:
+            system_prompt = f.read()
+    except FileNotFoundError:
+        system_prompt = """You are a helpful government services assistant. You can help users with various government services and forms.
+        When users want to update their address, collect the following information:
+        - Current address
+        - New address
+        - License number (format: DL1234567)
+        - Phone number
+        - Email address
+        
+        Guide users through the process by asking for one piece of information at a time.
+        If you receive multiple pieces of information, acknowledge them all.
+        Once you have all the information, inform the user that they can submit the form."""
+    
+    try:
+        # Initialize the RAG system
+        knowledge_base_dir = os.path.join(Path(__file__).resolve().parent.parent, 'knowledge_base')
+        rag_system = RAGSystem(knowledge_base_dir=knowledge_base_dir, openai_api_key=settings.OPENAI_API_KEY)
+        
+        # Generate response using RAG
+        bot_response, sources = rag_system.generate_response(
+            user_query=user_message,
+            system_prompt=system_prompt,
+            location=user_location
         )
-
-        bot_response = response.choices[0].message.content
-
-        # If we have a form template, add a call-to-action to the response
-        if form_template and form_template.get('fields'):
-            form_name = form_template.get('name', '')
-            bot_response += f"\n\nI can help you fill out the {form_name}. I've opened the form for you - please fill in your information and I'll help process it."
-
-        # Prepare form data for frontend
-        form_data = None
-        if intent and intent in CA_DMV_INTENTS:
-            form_data = {
-                'form_type': intent,
-                'name': CA_DMV_INTENTS[intent]['name'],
-                'fields': CA_DMV_INTENTS[intent]['fields']
-            }
-
-        return Response({
+        
+        # If RAG fails, fall back to standard OpenAI completion
+        if not bot_response:
+            # Add location context to the system message
+            system_message = f"{system_prompt}\n\nCurrent user location: {user_location}"
+            
+            # Prepare messages for the API call
+            messages = [
+                {"role": "system", "content": system_message}
+            ]
+            
+            # Add message specifying the intent if detected
+            if intent:
+                intent_message = f"The user is asking about {intent.replace('_', ' ')}. "
+                if form_template:
+                    intent_message += f"This requires the {form_template['form_name']}. "
+                    intent_message += f"Required fields: {', '.join(form_template['required_fields'])}"
+                messages.append({"role": "system", "content": intent_message})
+            
+            # Add the user's message
+            messages.append({"role": "user", "content": user_message})
+            
+            # Make the API call to OpenAI
+            response = openai.ChatCompletion.create(
+                model="gpt-4o-mini",
+                messages=messages,
+                temperature=0.7,
+                max_tokens=1000
+            )
+            
+            # Extract the response
+            bot_response = response.choices[0].message.content
+            sources = []
+        
+        # Return the response along with any form data and sources
+        response_data = {
             'response': bot_response,
+            'intent': intent,
+            'form_template': form_template,
             'form_data': form_data,
-            'extracted_data': extract_form_data(message, intent) if intent else None
-        })
+            'location': user_location,
+            'sources': sources
+        }
+        
+        return Response(response_data)
 
     except Exception as e:
         return Response({'error': str(e)}, status=500)
