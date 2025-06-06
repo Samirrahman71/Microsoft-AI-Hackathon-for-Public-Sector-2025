@@ -164,14 +164,6 @@ GovFlow AI implements robust security measures to protect citizen data:
 - **Compliance**: Designed to meet government security standards
 - **Privacy**: Minimizes data collection and provides transparency
 
-## 📈 Impact & Recognition
-
-GovFlow AI demonstrated significant impact in the AI Hackathon for Public Sector:
-
-- **50% reduction** in time citizens spend on government service navigation
-- **80% accuracy** in understanding and addressing citizen queries
-- **4.8/5 user satisfaction** rating during user testing
-- **Recognized** for innovative use of AI in improving government accessibility
 
 ## 🔄 Continuous Improvement
 
@@ -186,9 +178,9 @@ This project is under active development with a focus on:
 
 GovFlow AI was created by a team of innovative developers who secured 1st place at the AI Hackathon for Public Sector 2025:
 
-- **Samir Rahman** - AI Integration & Architecture Lead
-- **Sarthak Sethi** - Frontend Development & UX Design
-- **Tanzil Ahmed** - Backend Development & API Integration
+- **Samir Rahman**
+- **Sarthak Sethi** 
+- **Tanzil Ahmed** 
 
 The team combined expertise in AI, design, and government systems to create a solution that transforms citizen interactions with government services.
 
